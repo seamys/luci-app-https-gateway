@@ -1,48 +1,76 @@
-# luci-app-https-gateway
+<div align="center">
 
-LAN HTTPS reverse proxy gateway — OpenWrt 25.x LuCI application
+# 🔒 luci-app-https-gateway
 
-Manage nginx reverse proxy, automatic ACME certificate issuance, and local DNS resolution through a web UI, providing HTTPS access for LAN services.
+**LAN HTTPS Reverse Proxy Gateway for OpenWrt**
 
-## Features
+[![Release](https://img.shields.io/github/v/release/seamys/luci-app-https-gateway?style=flat-square&logo=github)](https://github.com/seamys/luci-app-https-gateway/releases)
+[![License](https://img.shields.io/github/license/seamys/luci-app-https-gateway?style=flat-square)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-149%20passing-brightgreen?style=flat-square&logo=checkmarx&logoColor=white)](#testing)
+[![OpenWrt](https://img.shields.io/badge/OpenWrt-25.x-00B5E2?style=flat-square&logo=openwrt&logoColor=white)](https://openwrt.org/)
+[![Shell](https://img.shields.io/badge/shell-POSIX%20sh-4EAA25?style=flat-square&logo=gnu-bash&logoColor=white)](src/bin/https-gateway)
+[![i18n](https://img.shields.io/badge/i18n-English%20%7C%20中文-blue?style=flat-square&logo=translate&logoColor=white)](#internationalization)
 
-- **Multi-domain management** — Add domains freely, each with an automatically issued TLS certificate
-- **Wildcard certificates** — Support `*.example.com`, one certificate covers all subdomains
-- **Reverse proxy** — Proxy any HTTP service on LAN or public networks
-- **WebSocket support** — One-click Upgrade header injection
-- **Automatic DNS** — Automatically add domain → router IP resolution in dnsmasq
-- **Auto certificate renewal** — Based on acme-acmesh, 90-day certificates auto-renew
-- **LuCI integration** — Three-page UI: status overview, certificate management, proxy rules
+Manage nginx reverse proxy, automatic ACME certificate issuance, and local DNS resolution through a LuCI web UI — providing HTTPS access for all your LAN services with zero manual configuration.
 
-## Requirements
+[📖 Documentation](docs/) · [🐛 Report Bug](https://github.com/seamys/luci-app-https-gateway/issues) · [💡 Request Feature](https://github.com/seamys/luci-app-https-gateway/issues)
 
-- OpenWrt 25.x (APK package manager)
-- A domain name + DNS provider API access
+</div>
 
-## Dependencies
+---
 
-Auto-installed: `nginx-ssl` `acme-acmesh` `acme-acmesh-dnsapi` `curl` `ca-bundle` `ca-certificates`
+## ✨ Features
 
-## Project Structure
+| Feature | Description |
+|---------|-------------|
+| 🌐 **Multi-domain** | Add domains freely, each with an automatically issued TLS certificate |
+| 🃏 **Wildcard certs** | `*.example.com` — one certificate covers all subdomains |
+| 🔀 **Reverse proxy** | Proxy any HTTP service on LAN or public networks |
+| ⚡ **WebSocket** | One-click Upgrade header injection for real-time apps |
+| 🧭 **Auto DNS** | Automatically add domain → router IP resolution in dnsmasq |
+| 🔄 **Auto renewal** | Based on acme.sh, 90-day certificates auto-renew |
+| 🎨 **LuCI native** | Three-page UI: status overview, certificate management, proxy rules |
+| 🌍 **i18n** | English + Chinese Simplified, easily extensible |
+
+## 📋 Requirements
+
+| Requirement | Details |
+|-------------|---------|
+| Platform | OpenWrt 25.x (APK package manager) |
+| Domain | A registered domain name |
+| DNS API | Provider API credentials (Alibaba Cloud, Cloudflare, DNSPod, or GoDaddy) |
+
+## 📦 Dependencies
+
+Auto-installed: 
+
+![nginx-ssl](https://img.shields.io/badge/-nginx--ssl-009639?style=flat-square&logo=nginx&logoColor=white)
+![acme-acmesh](https://img.shields.io/badge/-acme--acmesh-blue?style=flat-square)
+![acme-acmesh-dnsapi](https://img.shields.io/badge/-acme--acmesh--dnsapi-blue?style=flat-square)
+![curl](https://img.shields.io/badge/-curl-073551?style=flat-square&logo=curl&logoColor=white)
+![ca-bundle](https://img.shields.io/badge/-ca--bundle-grey?style=flat-square)
+![ca-certificates](https://img.shields.io/badge/-ca--certificates-grey?style=flat-square)
+
+## 🏗️ Project Structure
 
 ```
-├── Makefile           OpenWrt SDK build definition
+├── Makefile              OpenWrt SDK build definition
 ├── src/
-│   ├── view/          LuCI JS frontend views (i18n via _())
-│   ├── bin/           Main service script → /usr/sbin/https-gateway
-│   ├── rpcd/          RPC backend → /usr/libexec/rpcd/https-gateway
-│   ├── config/        UCI default config → /etc/config/https_gateway
-│   ├── init/          procd init → /etc/init.d/https_gateway
-│   ├── uci-defaults/  First-boot script → /etc/uci-defaults/
-│   ├── share/         LuCI menu + ACL JSON
-│   └── i18n/          Translation files (POT + PO)
-│       ├── templates/ POT template (source strings)
-│       └── zh_Hans/   Chinese Simplified translation
-├── docs/              Documentation
-└── tests/             Tests
+│   ├── view/             LuCI JS frontend views (i18n via _())
+│   ├── bin/              Main service script → /usr/sbin/https-gateway
+│   ├── rpcd/             RPC backend → /usr/libexec/rpcd/https-gateway
+│   ├── config/           UCI default config → /etc/config/https_gateway
+│   ├── init/             procd init → /etc/init.d/https_gateway
+│   ├── uci-defaults/     First-boot script → /etc/uci-defaults/
+│   ├── share/            LuCI menu + ACL JSON
+│   └── i18n/             Translation files (POT + PO)
+│       ├── templates/    POT template (source strings)
+│       └── zh_Hans/      Chinese Simplified translation
+├── docs/                 Documentation
+└── tests/                Unit & integration tests (149 tests)
 ```
 
-## Installation
+## 🚀 Installation
 
 ### Manual Deployment (Development/Debug)
 
@@ -84,16 +112,46 @@ cp src/view/*.js                   files/www/luci-static/resources/view/https-ga
 apk add --allow-untrusted luci-app-https-gateway_0.1.0-1_all.apk
 ```
 
-## Quick Configuration
+## ⚡ Quick Configuration
 
-1. Navigate to LuCI → Services → HTTPS Gateway
+1. Navigate to **LuCI → Services → HTTPS Gateway**
 2. Enter email, select DNS provider, fill in API credentials
 3. Add a certificate (e.g. `*.example.com`)
 4. Add proxy rules (domain + path + upstream address)
-5. Enable gateway → Save & Apply
-6. Click "Issue/Renew Certificates"
+5. Enable gateway → **Save & Apply**
+6. Click **"Issue/Renew Certificates"**
 
-## Release
+> 💡 **Tip**: Start with staging mode enabled to test your setup without hitting Let's Encrypt rate limits.
+
+## 🧪 Testing
+
+Run the full test suite (no router required):
+
+```sh
+sh tests/run_all.sh
+```
+
+| Suite | Tests | Coverage |
+|-------|-------|----------|
+| `test_validation.sh` | 47 | Domain, location, upstream regex validation |
+| `test_nginx_conf.sh` | 37 | nginx config generation, TLS, WebSocket |
+| `test_dns_certs.sh` | 25 | Certificate paths, wildcard matching, DNS sync |
+| `test_integration.sh` | 25 | JSON output, UCI validation, service states |
+| `test_validate.sh` | 15 | Legacy regex smoke tests |
+
+## 🌍 Internationalization
+
+The UI uses OpenWrt's standard PO/LMO i18n system:
+
+- Source strings in English with `_()` markers in JS views
+- Translations in `src/i18n/<lang>/https-gateway.po`
+- Build produces `.lmo` binary files for LuCI runtime
+
+**Available languages**: English (base), 中文简体 (zh_Hans)
+
+To add a new language, copy `src/i18n/templates/https-gateway.pot` to `src/i18n/<lang>/https-gateway.po` and translate the `msgstr` entries.
+
+## 📋 Release
 
 To create a new release:
 
@@ -106,6 +164,23 @@ GitHub Actions will automatically package `src/` + `Makefile` into a source tarb
 
 The tarball can be extracted into the OpenWrt SDK `package/` directory for building.
 
-## License
+## 🤝 Contributing
 
-MIT
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feat/amazing-feature`)
+3. Run tests (`sh tests/run_all.sh`)
+4. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+5. Push to the branch (`git push origin feat/amazing-feature`)
+6. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+**If this project helps you, consider giving it a ⭐**
+
+</div>
