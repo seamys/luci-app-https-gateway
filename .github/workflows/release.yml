@@ -18,7 +18,8 @@ jobs:
     strategy:
       matrix:
         arch: [x86_64, aarch64_cortex-a53, aarch64_generic, arm_cortex-a7_neon-vfpv4]
-        include:
+      fail-fast: false
+      include:
           - arch: x86_64
             sdk_target: x86/64
             sdk_name: openwrt-sdk-25.12.4-x86-64_gcc-14.3.0_musl.Linux-x86_64
@@ -44,7 +45,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential gawk unzip file wget python3 \
-            libncurses-dev zlib1g-dev libssl-dev zstd
+            libncurses-dev zlib1g-dev libssl-dev zstd gcc-multilib
 
       - name: Cache OpenWrt SDK
         uses: actions/cache@v4
