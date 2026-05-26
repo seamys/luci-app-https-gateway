@@ -11,7 +11,10 @@
 			"ubus": {
 				"https-gateway": ["cert_issue"]
 			},
-			"uci": ["https_gateway"]
+			"uci": ["https_gateway"],
+			"file": {
+				"/etc/init.d/https_gateway": ["exec"]
+			}
 		}
 	}
 }

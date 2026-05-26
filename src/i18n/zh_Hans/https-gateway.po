@@ -224,3 +224,135 @@ msgstr "WebSocket"
 
 msgid "Enable Upgrade/Connection headers for WebSocket long-lived connections."
 msgstr "开启后添加 Upgrade/Connection 头，支持 WebSocket 长连接。"
+
+msgid "HTTPS Gateway"
+msgstr "HTTPS 网关"
+
+msgid "Overview"
+msgstr "概览"
+
+msgid "Certificates"
+msgstr "证书管理"
+
+msgid "EC 384"
+msgstr "EC 384"
+
+msgid "RSA 2048"
+msgstr "RSA 2048"
+
+msgid "RSA 4096"
+msgstr "RSA 4096"
+
+msgid "Dashboard"
+msgstr "仪表盘"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "HTTPS Gateway \u2014 Dashboard"
+msgstr "HTTPS Gateway — 仪表盘"
+
+msgid "Quick Actions"
+msgstr "快捷操作"
+
+msgid "Getting Started"
+msgstr "快速入门"
+
+msgid "Configure ACME email, DNS provider, and credentials"
+msgstr "配置 ACME 邮箱、DNS 提供商和凭据"
+
+msgid "Add the domains you want to secure"
+msgstr "添加需要签发证书的域名"
+
+msgid "Return here and click \u201cIssue/Renew Certificates\u201d"
+msgstr "返回此页，点击「申请/续签证书」"
+
+msgid "Map each domain to your local services"
+msgstr "将域名映射到对应的内网服务"
+
+msgid "Staging Mode Active"
+msgstr "测试模式已启用"
+
+msgid "Certificates are NOT trusted by browsers. Go to "
+msgstr "当前证书不被浏览器信任，请前往 "
+
+msgid "and disable \"Use Staging Environment\" before issuing real certificates."
+msgstr "关闭「使用测试环境」后再申请正式证书。"
+
+msgid "Testing..."
+msgstr "检测中..."
+
+msgid "nginx configuration test passed."
+msgstr "nginx 配置检查通过。"
+
+msgid "Starting..."
+msgstr "启动中..."
+
+msgid "Requesting certificate issuance..."
+msgstr "正在发起证书申请..."
+
+msgid "Certificate issuance started. This may take 3-5 minutes..."
+msgstr "证书申请已启动，可能需要 3-5 分钟..."
+
+msgid "Issuing..."
+msgstr "申请中..."
+
+msgid "Failed to start certificate issuance: "
+msgstr "证书申请启动失败："
+
+msgid "Reloading..."
+msgstr "重载中..."
+
+msgid "Configuration reloaded successfully."
+msgstr "配置已成功重载。"
+
+msgid "Reload failed: "
+msgstr "重载失败："
+
+msgid "HTTPS Gateway - Settings"
+msgstr "HTTPS Gateway - 设置"
+
+msgid "Global configuration: service control, ACME account, DNS API credentials."
+msgstr "全局配置：服务开关、ACME 账户、DNS API 凭据。"
+
+msgid "Service"
+msgstr "服务"
+
+msgid "ACME / Certificate Issuance"
+msgstr "ACME / 证书申请"
+
+msgid "DNS API provider for DNS-01 challenge. Determines which credential keys are required below."
+msgstr "用于 DNS-01 验证的 DNS 提供商，决定下方需要填写哪些凭据。"
+
+msgid "Enter key=value pairs for your DNS provider. See the hint below for the required keys."
+msgstr "填写所选 DNS 提供商所需的 Key=Value 凭据，所需字段见下方提示。"
+
+msgid "Local DNS"
+msgstr "本地 DNS"
+
+msgid "Automatically add domain \u2192 router IP mappings to dnsmasq so LAN devices resolve to this gateway."
+msgstr "自动在 dnsmasq 中添加域名到路由器 IP 的解析，让局域网设备访问此网关。"
+
+msgid "Required keys for selected provider:"
+msgstr "当前提供商所需凭据："
+
+msgid "No certificates configured yet."
+msgstr "尚未配置任何证书。"
+
+msgid "To issue or renew certificates, go to "
+msgstr "申请或续签证书请前往 "
+
+msgid "Dashboard \u2192 Quick Actions"
+msgstr "仪表盘 → 快捷操作"
+
+msgid "expires"
+msgstr "过期"
+
+msgid "Manage Certificates"
+msgstr "管理证书"
+
+msgid "No certificate covers this domain. "
+msgstr "该域名没有对应的证书覆盖。"
+
+msgid "Add one in Certificates"
+msgstr "在证书管理中添加"

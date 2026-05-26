@@ -1,6 +1,6 @@
 # Build outputs
-bin/
-tmp/
+/bin/
+/tmp/
 build_dir/
 
 # Editor

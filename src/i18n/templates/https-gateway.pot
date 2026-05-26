@@ -294,3 +294,187 @@ msgstr ""
 #: src/view/proxies.js
 msgid "Enable Upgrade/Connection headers for WebSocket long-lived connections."
 msgstr ""
+
+#: src/share/menu.d/luci-app-https-gateway.json
+msgid "HTTPS Gateway"
+msgstr ""
+
+#: src/share/menu.d/luci-app-https-gateway.json
+msgid "Overview"
+msgstr ""
+
+#: src/share/menu.d/luci-app-https-gateway.json
+msgid "Certificates"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "EC 384"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "RSA 2048"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "RSA 4096"
+msgstr ""
+
+#: src/share/menu.d/luci-app-https-gateway.json
+msgid "Overview"
+msgstr ""
+
+#: src/share/menu.d/luci-app-https-gateway.json
+msgid "Dashboard"
+msgstr ""
+
+#: src/share/menu.d/luci-app-https-gateway.json
+msgid "Settings"
+msgstr ""
+
+#: src/view/overview.js
+msgid "HTTPS Gateway \u2014 Dashboard"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Quick Actions"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Getting Started"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Configure ACME email, DNS provider, and credentials"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Add the domains you want to secure"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Return here and click \u201cIssue/Renew Certificates\u201d"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Map each domain to your local services"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Staging Mode Active"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Certificates are NOT trusted by browsers. Go to "
+msgstr ""
+
+#: src/view/overview.js
+msgid "and disable \"Use Staging Environment\" before issuing real certificates."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Settings"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Testing..."
+msgstr ""
+
+#: src/view/overview.js
+msgid "nginx configuration test passed."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Starting..."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Requesting certificate issuance..."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Certificate issuance started. This may take 3-5 minutes..."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Issuing..."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Failed to start certificate issuance: "
+msgstr ""
+
+#: src/view/overview.js
+msgid "Reloading..."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Configuration reloaded successfully."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Reload failed: "
+msgstr ""
+
+#: src/view/settings.js
+msgid "HTTPS Gateway - Settings"
+msgstr ""
+
+#: src/view/settings.js
+msgid "Global configuration: service control, ACME account, DNS API credentials."
+msgstr ""
+
+#: src/view/settings.js
+msgid "Service"
+msgstr ""
+
+#: src/view/settings.js
+msgid "ACME / Certificate Issuance"
+msgstr ""
+
+#: src/view/settings.js
+msgid "DNS API provider for DNS-01 challenge. Determines which credential keys are required below."
+msgstr ""
+
+#: src/view/settings.js
+msgid "Enter key=value pairs for your DNS provider. See the hint below for the required keys."
+msgstr ""
+
+#: src/view/settings.js
+msgid "Local DNS"
+msgstr ""
+
+#: src/view/settings.js
+msgid "Automatically add domain \u2192 router IP mappings to dnsmasq so LAN devices resolve to this gateway."
+msgstr ""
+
+#: src/view/settings.js
+msgid "Required keys for selected provider:"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "No certificates configured yet."
+msgstr ""
+
+#: src/view/certificates.js
+msgid "To issue or renew certificates, go to "
+msgstr ""
+
+#: src/view/certificates.js
+msgid "Dashboard \u2192 Quick Actions"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "expires"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Manage Certificates"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "No certificate covers this domain. "
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Add one in Certificates"
+msgstr ""

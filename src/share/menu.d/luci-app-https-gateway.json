@@ -11,16 +11,24 @@
 		}
 	},
 	"admin/services/https-gateway/overview": {
-		"title": "Overview",
+		"title": "Dashboard",
 		"order": 1,
 		"action": {
 			"type": "view",
 			"path": "https-gateway/overview"
 		}
 	},
+	"admin/services/https-gateway/settings": {
+		"title": "Settings",
+		"order": 2,
+		"action": {
+			"type": "view",
+			"path": "https-gateway/settings"
+		}
+	},
 	"admin/services/https-gateway/certificates": {
 		"title": "Certificates",
-		"order": 2,
+		"order": 3,
 		"action": {
 			"type": "view",
 			"path": "https-gateway/certificates"
@@ -28,7 +36,7 @@
 	},
 	"admin/services/https-gateway/proxies": {
 		"title": "Proxy Rules",
-		"order": 3,
+		"order": 4,
 		"action": {
 			"type": "view",
 			"path": "https-gateway/proxies"
