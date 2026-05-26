@@ -2,12 +2,42 @@
 
 ## Prerequisites
 
-- OpenWrt 25.x (x86_64 or ARM) with APK package manager
+- OpenWrt 23.05+ or 25.x (x86_64 or ARM)
 - SSH access to the router (root)
 - A registered domain name (e.g. `example.com`)
 - DNS provider API credentials (Alibaba Cloud, Cloudflare, DNSPod, or GoDaddy)
 
-## Method 1: Manual Deployment (Recommended for Development)
+## Method 1: Pre-built Package (Recommended)
+
+Download the `.ipk` file matching your router's architecture from the [GitHub Releases](https://github.com/seamys/luci-app-https-gateway/releases) page.
+
+### Determine your architecture
+
+```sh
+ssh root@192.168.0.1 'opkg print-architecture'
+# or for APK:
+ssh root@192.168.0.1 'cat /etc/apk/arch'
+```
+
+### Install with opkg (OpenWrt 23.x)
+
+```sh
+scp luci-app-https-gateway_*_x86_64.ipk root@192.168.0.1:/tmp/
+ssh root@192.168.0.1 'opkg install /tmp/luci-app-https-gateway_*.ipk'
+```
+
+### Install with APK (OpenWrt 25.x)
+
+```sh
+scp luci-app-https-gateway_*_x86_64.ipk root@192.168.0.1:/tmp/
+ssh root@192.168.0.1 'apk add --allow-untrusted /tmp/luci-app-https-gateway_*.ipk'
+```
+
+Dependencies (`nginx-ssl`, `acme-acmesh`, etc.) are installed automatically.
+
+After installation, access LuCI → **Services → HTTPS Gateway**.
+
+## Method 2: Manual Deployment (Development)
 
 ### Step 1: Install Dependencies
 

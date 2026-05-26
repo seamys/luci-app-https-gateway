@@ -72,6 +72,28 @@ Auto-installed:
 
 ## 🚀 Installation
 
+### Pre-built Package (Recommended)
+
+Download the `.ipk` matching your router's architecture from the [Releases](https://github.com/seamys/luci-app-https-gateway/releases) page:
+
+| Architecture | Target Devices |
+|--------------|----------------|
+| `x86_64` | Virtual machines, PC routers |
+| `aarch64_cortex-a53` | MediaTek MT7981/7986 (Filogic) |
+| `aarch64_generic` | Rockchip ARM64 boards |
+| `arm_cortex-a7_neon-vfpv4` | Allwinner sunxi |
+
+```sh
+# Transfer to router
+scp luci-app-https-gateway_*_x86_64.ipk root@192.168.0.1:/tmp/
+
+# Install (OpenWrt 23.x with opkg)
+ssh root@192.168.0.1 'opkg install /tmp/luci-app-https-gateway_*.ipk'
+
+# Or OpenWrt 25.x with APK
+ssh root@192.168.0.1 'apk add --allow-untrusted /tmp/luci-app-https-gateway_*.ipk'
+```
+
 ### Manual Deployment (Development/Debug)
 
 ```sh
@@ -106,10 +128,14 @@ mkdir -p files/www/luci-static/resources/view/https-gateway
 cp src/view/*.js                   files/www/luci-static/resources/view/https-gateway/
 ```
 
-### APK Package Install (After SDK Build)
+### APK/opkg Package Install (After SDK Build)
 
 ```sh
-apk add --allow-untrusted luci-app-https-gateway_0.1.0-1_all.apk
+# opkg (OpenWrt 23.x)
+opkg install luci-app-https-gateway_1.0.0-1_all.ipk
+
+# APK (OpenWrt 25.x)
+apk add --allow-untrusted luci-app-https-gateway_1.0.0-1_all.apk
 ```
 
 ## ⚡ Quick Configuration
@@ -156,13 +182,25 @@ To add a new language, copy `src/i18n/templates/https-gateway.pot` to `src/i18n/
 To create a new release:
 
 ```sh
-git tag v0.2.0
-git push origin v0.2.0
+# Bump version in Makefile, then:
+git tag v1.1.0
+git push origin v1.1.0
 ```
 
-GitHub Actions will automatically package `src/` + `Makefile` into a source tarball and publish a GitHub Release with auto-generated release notes.
+GitHub Actions will automatically:
+1. Download the OpenWrt SDK for each supported architecture
+2. Compile `.ipk` packages (x86_64, aarch64, arm)
+3. Create a source tarball for manual SDK builds
+4. Publish a GitHub Release with all assets attached
 
-The tarball can be extracted into the OpenWrt SDK `package/` directory for building.
+### Supported architectures
+
+| Arch | SDK Target | Typical Devices |
+|------|-----------|-----------------|
+| x86_64 | x86/64 | VMs, soft routers |
+| aarch64_cortex-a53 | mediatek/filogic | GL.iNet MT3000, Xiaomi AX series |
+| aarch64_generic | rockchip/armv8 | NanoPi R4S/R5S, FriendlyElec |
+| arm_cortex-a7 | sunxi/cortexa7 | Orange Pi, Banana Pi |
 
 ## 🤝 Contributing
 

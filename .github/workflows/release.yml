@@ -8,8 +8,99 @@ on:
 permissions:
   contents: write
 
+env:
+  PKG_NAME: luci-app-https-gateway
+  OPENWRT_VERSION: "23.05.5"
+  SDK_ARCH: "x86-64"
+
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [x86_64, aarch64_cortex-a53, aarch64_generic, arm_cortex-a7_neon-vfpv4]
+        include:
+          - arch: x86_64
+            sdk_target: x86/64
+            sdk_name: openwrt-sdk-23.05.5-x86-64_gcc-12.3.0_musl.Linux-x86_64
+          - arch: aarch64_cortex-a53
+            sdk_target: mediatek/filogic
+            sdk_name: openwrt-sdk-23.05.5-mediatek-filogic_gcc-12.3.0_musl.Linux-x86_64
+          - arch: aarch64_generic
+            sdk_target: rockchip/armv8
+            sdk_name: openwrt-sdk-23.05.5-rockchip-armv8_gcc-12.3.0_musl.Linux-x86_64
+          - arch: arm_cortex-a7_neon-vfpv4
+            sdk_target: sunxi/cortexa7
+            sdk_name: openwrt-sdk-23.05.5-sunxi-cortexa7_gcc-12.3.0_musl_eabi.Linux-x86_64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential gawk unzip file wget python3 \
+            libncurses-dev zlib1g-dev libssl-dev
+
+      - name: Cache OpenWrt SDK
+        uses: actions/cache@v4
+        id: cache-sdk
+        with:
+          path: sdk
+          key: openwrt-sdk-${{ matrix.sdk_name }}
+
+      - name: Download OpenWrt SDK
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
+        run: |
+          SDK_URL="https://downloads.openwrt.org/releases/${{ env.OPENWRT_VERSION }}/targets/${{ matrix.sdk_target }}/${{ matrix.sdk_name }}.tar.xz"
+          wget -q "$SDK_URL" -O sdk.tar.xz
+          mkdir -p sdk
+          tar -xf sdk.tar.xz --strip-components=1 -C sdk
+          rm sdk.tar.xz
+
+      - name: Prepare package source
+        run: |
+          mkdir -p sdk/package/${{ env.PKG_NAME }}
+          cp -r src Makefile sdk/package/${{ env.PKG_NAME }}/
+
+      - name: Update feeds
+        working-directory: sdk
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Build package
+        working-directory: sdk
+        run: |
+          make defconfig
+          make package/${{ env.PKG_NAME }}/compile V=s -j$(nproc) || \
+          make package/${{ env.PKG_NAME }}/compile V=s -j1
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p dist
+          find sdk/bin -name "${PKG_NAME}*.ipk" -exec cp {} dist/ \;
+          # Rename with arch suffix for clarity
+          for f in dist/*.ipk; do
+            [ -f "$f" ] || continue
+            base=$(basename "$f" .ipk)
+            mv "$f" "dist/${base}_${{ matrix.arch }}.ipk"
+          done
+          ls -la dist/
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ipk-${{ matrix.arch }}
+          path: dist/*.ipk
+
   release:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,20 +110,60 @@ jobs:
         id: version
         run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
       - name: Build source package
         run: |
-          PKG_NAME="luci-app-https-gateway"
           VERSION="${{ steps.version.outputs.version }}"
-          ARCHIVE="${PKG_NAME}_${VERSION}.tar.gz"
+          ARCHIVE="${{ env.PKG_NAME }}_${VERSION}_src.tar.gz"
+          mkdir -p "dist/${{ env.PKG_NAME }}"
+          cp -r src Makefile "dist/${{ env.PKG_NAME }}/"
+          tar -czf "release/${ARCHIVE}" -C dist "${{ env.PKG_NAME }}"
+        env:
+          PKG_NAME: ${{ env.PKG_NAME }}
 
-          mkdir -p "dist/${PKG_NAME}"
-          cp -r src Makefile "dist/${PKG_NAME}/"
-          tar -czf "dist/${ARCHIVE}" -C dist "${PKG_NAME}"
-          echo "archive=dist/${ARCHIVE}" >> "$GITHUB_ENV"
-          echo "archive_name=${ARCHIVE}" >> "$GITHUB_ENV"
+      - name: Prepare release assets
+        run: |
+          mkdir -p release
+          cp artifacts/*.ipk release/ 2>/dev/null || true
+          # Source tarball
+          VERSION="${{ steps.version.outputs.version }}"
+          ARCHIVE="${{ env.PKG_NAME }}_${VERSION}_src.tar.gz"
+          mkdir -p "tmp/${{ env.PKG_NAME }}"
+          cp -r src Makefile "tmp/${{ env.PKG_NAME }}/"
+          tar -czf "release/${ARCHIVE}" -C tmp "${{ env.PKG_NAME }}"
+          ls -la release/
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: ${{ env.archive }}
+          body: |
+            ## Installation
+
+            ### Direct install on router
+            ```sh
+            # Download the .ipk matching your architecture, then:
+            opkg install luci-app-https-gateway_*.ipk
+            # Or for OpenWrt 25.x (APK):
+            apk add --allow-untrusted luci-app-https-gateway_*.apk
+            ```
+
+            ### Build from source (OpenWrt SDK)
+            ```sh
+            tar -xzf ${{ env.PKG_NAME }}_${{ steps.version.outputs.version }}_src.tar.gz -C package/
+            make package/${{ env.PKG_NAME }}/compile
+            ```
+
+            ## Architectures
+            | File | Target |
+            |------|--------|
+            | `*_x86_64.ipk` | x86_64 (VM, PC) |
+            | `*_aarch64_cortex-a53.ipk` | MediaTek Filogic (MT7981/7986) |
+            | `*_aarch64_generic.ipk` | Rockchip ARM64 |
+            | `*_arm_cortex-a7_neon-vfpv4.ipk` | Allwinner sunxi |
+          files: release/*
