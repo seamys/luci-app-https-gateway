@@ -132,10 +132,10 @@ cp src/view/*.js                   files/www/luci-static/resources/view/https-ga
 
 ```sh
 # opkg (OpenWrt 23.x)
-opkg install luci-app-https-gateway_1.0.0-1_all.ipk
+opkg install luci-app-https-gateway_1.0.1-1_all.ipk
 
 # APK (OpenWrt 25.x)
-apk add --allow-untrusted luci-app-https-gateway_1.0.0-1_all.apk
+apk add --allow-untrusted luci-app-https-gateway_1.0.1-1_all.apk
 ```
 
 ## ⚡ Quick Configuration
