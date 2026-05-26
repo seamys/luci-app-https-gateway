@@ -1,0 +1,26 @@
+#!/bin/sh
+# First-boot setup for luci-app-https-gateway
+
+# Ensure required directories exist
+mkdir -p /var/run/https-gateway
+mkdir -p /etc/nginx/conf.d
+mkdir -p /etc/ssl/acme
+
+# Set permissions on sensitive files
+chmod 0600 /etc/config/https_gateway 2>/dev/null || true
+
+# Set executable permissions
+chmod +x /usr/sbin/https-gateway 2>/dev/null || true
+chmod +x /usr/libexec/rpcd/https-gateway 2>/dev/null || true
+chmod +x /etc/init.d/https_gateway 2>/dev/null || true
+
+# Ensure ACME base config exists
+if ! uci -q get acme.@acme[0] >/dev/null 2>&1; then
+	uci add acme acme >/dev/null 2>&1 || true
+	uci commit acme 2>/dev/null || true
+fi
+
+# Enable and restart rpcd to pick up new backend
+/etc/init.d/rpcd restart 2>/dev/null || true
+
+exit 0

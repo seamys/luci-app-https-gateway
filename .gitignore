@@ -1,0 +1,18 @@
+# Build outputs
+bin/
+tmp/
+build_dir/
+
+# Editor
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Deployment artifacts
+*.img
+*.img.gz

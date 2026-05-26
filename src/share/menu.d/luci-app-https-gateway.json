@@ -1,0 +1,37 @@
+{
+	"admin/services/https-gateway": {
+		"title": "HTTPS Gateway",
+		"order": 50,
+		"action": {
+			"type": "view",
+			"path": "https-gateway/overview"
+		},
+		"depends": {
+			"acl": ["luci-app-https-gateway"]
+		}
+	},
+	"admin/services/https-gateway/overview": {
+		"title": "Overview",
+		"order": 1,
+		"action": {
+			"type": "view",
+			"path": "https-gateway/overview"
+		}
+	},
+	"admin/services/https-gateway/certificates": {
+		"title": "Certificates",
+		"order": 2,
+		"action": {
+			"type": "view",
+			"path": "https-gateway/certificates"
+		}
+	},
+	"admin/services/https-gateway/proxies": {
+		"title": "Proxy Rules",
+		"order": 3,
+		"action": {
+			"type": "view",
+			"path": "https-gateway/proxies"
+		}
+	}
+}

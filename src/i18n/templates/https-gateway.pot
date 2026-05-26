@@ -1,0 +1,296 @@
+# HTTPS Gateway LuCI translation template
+# Copyright (C) 2024
+# This file is distributed under the same license as the luci-app-https-gateway package.
+#
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: luci-app-https-gateway 0.1.0\n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/view/overview.js
+msgid "Running"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Stopped"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Valid"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Pending"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Unknown"
+msgstr ""
+
+#: src/view/overview.js
+msgid "No certificates configured"
+msgstr ""
+
+#: src/view/overview.js
+msgid "nginx Status"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Proxy Rules"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Certificate Status"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Domain"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Status"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Expires"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Key Type"
+msgstr ""
+
+#: src/view/overview.js
+msgid "nginx configuration test passed"
+msgstr ""
+
+#: src/view/overview.js
+msgid "nginx configuration error: "
+msgstr ""
+
+#: src/view/overview.js
+msgid "Test nginx Config"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Issue/renew all certificates? This may take 3-5 minutes."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Certificate issuance started..."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Issuing certificates..."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Certificate issuance completed."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Issue/Renew Certificates"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Configuration reloaded"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Reload Configuration"
+msgstr ""
+
+#: src/view/overview.js
+msgid "HTTPS Gateway - Global Settings"
+msgstr ""
+
+#: src/view/overview.js
+msgid "LAN HTTPS reverse proxy gateway — manage ACME certificates, nginx virtual hosts, and local DNS resolution in one place."
+msgstr ""
+
+#: src/view/overview.js
+msgid "General Settings"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Service Status"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Enable Gateway"
+msgstr ""
+
+#: src/view/overview.js
+msgid "When disabled, the proxy service stops and uhttpd reverts to default ports."
+msgstr ""
+
+#: src/view/overview.js
+msgid "ACME Email"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Let's Encrypt account email for certificate expiry notifications."
+msgstr ""
+
+#: src/view/overview.js
+msgid "DNS Provider"
+msgstr ""
+
+#: src/view/overview.js
+msgid "DNS API provider used for DNS-01 challenge validation."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Alibaba Cloud DNS (dns_ali)"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Cloudflare (dns_cf)"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Tencent DNSPod (dns_dp)"
+msgstr ""
+
+#: src/view/overview.js
+msgid "GoDaddy (dns_gd)"
+msgstr ""
+
+#: src/view/overview.js
+msgid "DNS API Credentials"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Format: Key=\"Value\". Example: Ali_Key=\"LTAI...\", Ali_Secret=\"...\""
+msgstr ""
+
+#: src/view/overview.js
+msgid "DNS Propagation Wait (seconds)"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Time to wait for DNS TXT record propagation. Recommended: 180-300."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Use Staging Environment"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Use Let's Encrypt Staging for testing. Certificates will not be trusted by browsers."
+msgstr ""
+
+#: src/view/overview.js
+msgid "Automatic Local DNS"
+msgstr ""
+
+#: src/view/overview.js
+msgid "Automatically add domain to router IP mappings in dnsmasq."
+msgstr ""
+
+#: src/view/certificates.js
+msgid "HTTPS Gateway - Certificates"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "Manage TLS certificates. Supports individual domains and wildcards (*.example.com). A wildcard certificate covers all subdomains without individual issuance."
+msgstr ""
+
+#: src/view/certificates.js
+msgid "Certificate List"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "Add Certificate"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "Enabled"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "Enter a full domain (e.g. nas.example.com) or wildcard (e.g. *.example.com). Wildcard certificates also cover the base domain."
+msgstr ""
+
+#: src/view/certificates.js
+msgid "Domain cannot be empty"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "Invalid domain format. Example: sub.example.com or *.example.com"
+msgstr ""
+
+#: src/view/certificates.js
+msgid "EC 256 is faster and smaller; RSA 2048 has better compatibility."
+msgstr ""
+
+#: src/view/certificates.js
+msgid "EC 256 (Recommended)"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "HTTPS Gateway - Proxy Rules"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Configure reverse proxy rules. Each rule maps a domain + path to a backend service, with HTTP and WebSocket support."
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Add Proxy Rule"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Name"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "A friendly name for this rule, e.g. \"NAS WebUI\", \"Home Assistant\"."
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Domain for this rule (must be covered by a configured certificate)."
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Enter a valid domain (no wildcards), e.g. nas.example.com"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Path"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "URL path prefix, e.g. / or /api/. Paths under the same domain must be unique."
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Path must start with / and contain only letters, digits, _, ., -, /"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Upstream"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Backend service address, e.g. http://192.168.0.100:5000 or http://127.0.0.1:8080"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Upstream address cannot be empty"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Enter a valid HTTP/HTTPS address"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "WebSocket"
+msgstr ""
+
+#: src/view/proxies.js
+msgid "Enable Upgrade/Connection headers for WebSocket long-lived connections."
+msgstr ""

@@ -1,0 +1,17 @@
+{
+	"luci-app-https-gateway": {
+		"description": "Grant access to HTTPS Gateway configuration",
+		"read": {
+			"ubus": {
+				"https-gateway": ["status", "cert_status", "nginx_test"]
+			},
+			"uci": ["https_gateway"]
+		},
+		"write": {
+			"ubus": {
+				"https-gateway": ["cert_issue"]
+			},
+			"uci": ["https_gateway"]
+		}
+	}
+}

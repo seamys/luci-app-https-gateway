@@ -1,0 +1,94 @@
+#!/bin/sh
+# rpcd backend for https-gateway (luci-app-https-gateway)
+# ubus object: https-gateway
+# methods: status, cert_issue, cert_status, nginx_test
+
+. /usr/share/libubox/jshn.sh
+
+PROG=/usr/sbin/https-gateway
+ISSUE_PID_FILE="/var/run/https-gateway/issue.pid"
+ISSUE_LOG_FILE="/var/run/https-gateway/issue.log"
+
+method_status() {
+	"$PROG" status
+}
+
+method_nginx_test() {
+	"$PROG" test
+}
+
+method_cert_issue() {
+	read -r input
+	json_load "$input" 2>/dev/null
+
+	mkdir -p /var/run/https-gateway
+
+	# Kill any existing issue process
+	if [ -f "$ISSUE_PID_FILE" ]; then
+		local old_pid
+		old_pid=$(cat "$ISSUE_PID_FILE")
+		kill "$old_pid" 2>/dev/null || true
+		rm -f "$ISSUE_PID_FILE"
+	fi
+
+	# Run ACME renewal in background
+	(
+		echo $$ > "$ISSUE_PID_FILE"
+		/etc/init.d/acme renew > "$ISSUE_LOG_FILE" 2>&1
+		local rc=$?
+		rm -f "$ISSUE_PID_FILE"
+		if [ $rc -eq 0 ]; then
+			echo "success" >> "$ISSUE_LOG_FILE"
+			/etc/init.d/nginx reload 2>/dev/null
+		else
+			echo "failed" >> "$ISSUE_LOG_FILE"
+		fi
+	) &
+
+	json_init
+	json_add_boolean "started" 1
+	json_add_string "message" "Certificate issuance started in background"
+	json_dump
+}
+
+method_cert_status() {
+	json_init
+
+	if [ -f "$ISSUE_PID_FILE" ]; then
+		local pid
+		pid=$(cat "$ISSUE_PID_FILE")
+		if kill -0 "$pid" 2>/dev/null; then
+			json_add_string "state" "running"
+		else
+			json_add_string "state" "finished"
+			rm -f "$ISSUE_PID_FILE"
+		fi
+	else
+		json_add_string "state" "idle"
+	fi
+
+	if [ -f "$ISSUE_LOG_FILE" ]; then
+		local log_tail
+		log_tail=$(tail -5 "$ISSUE_LOG_FILE" | tr '"' "'" | tr '\n' '|')
+		json_add_string "log" "$log_tail"
+	else
+		json_add_string "log" ""
+	fi
+
+	json_dump
+}
+
+case "$1" in
+	list)
+		echo '{"status":{},"cert_issue":{},"cert_status":{},"nginx_test":{}}'
+		;;
+	call)
+		case "$2" in
+			status)      method_status ;;
+			cert_issue)  method_cert_issue ;;
+			cert_status) method_cert_status ;;
+			nginx_test)  method_nginx_test ;;
+			*)           echo '{}' ;;
+		esac
+		;;
+esac
