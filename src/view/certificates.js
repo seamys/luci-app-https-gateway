@@ -78,7 +78,7 @@ return view.extend({
 		o.validate = function(section_id, value) {
 			if (!value)
 				return _('Domain cannot be empty');
-			if (!/^\*?\\.?[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(value))
+			if (!/^\*?\.?[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(value))
 				return _('Invalid domain format. Example: sub.example.com or *.example.com');
 			return true;
 		};
