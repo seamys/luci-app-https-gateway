@@ -67,6 +67,10 @@ jobs:
         run: |
           mkdir -p sdk/package/${{ env.PKG_NAME }}
           cp -r src Makefile sdk/package/${{ env.PKG_NAME }}/
+          # Inject package version from the git tag (single source of truth)
+          sed -i "s/^PKG_VERSION:=.*/PKG_VERSION:=${{ steps.version.outputs.version }}/" \
+            sdk/package/${{ env.PKG_NAME }}/Makefile
+          grep ^PKG_VERSION sdk/package/${{ env.PKG_NAME }}/Makefile
 
       - name: Update feeds
         working-directory: sdk
@@ -148,7 +152,7 @@ jobs:
             ### Direct install on router
             ```sh
             # Download the .apk matching your architecture, then:
-            apk add --allow-untrusted luci-app-https-gateway_*.apk
+            apk add --allow-untrusted luci-app-https-gateway-*.apk
             ```
 
             ### Build from source (OpenWrt SDK)
