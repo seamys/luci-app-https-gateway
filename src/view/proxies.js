@@ -56,6 +56,11 @@ return view.extend({
 		o.placeholder = 'My Service';
 		o.width = '15%';
 		o.rmempty = false;
+		/* Pre-existing rules (named UCI sections) have no name option;
+		   fall back to the section id so the table stays readable. */
+		o.textvalue = function(section_id) {
+			return this.cfgvalue(section_id) || section_id;
+		};
 		o.validate = function(section_id, value) {
 			if (!value || !value.trim())
 				return _('Name cannot be empty');
