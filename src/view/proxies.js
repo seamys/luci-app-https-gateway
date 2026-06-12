@@ -37,25 +37,46 @@ return view.extend({
 		m = new form.Map('https_gateway', _('HTTPS Gateway - Proxy Rules'),
 			_('Configure reverse proxy rules. Each rule maps a domain + path to a backend service, with HTTP and WebSocket support.'));
 
-		s = m.section(form.TypedSection, 'proxy', _('Proxy Rules'));
-		s.anonymous = false;
+		s = m.section(form.GridSection, 'proxy', _('Proxy Rules'));
+		s.anonymous = true;
 		s.addremove = true;
 		s.addbtntitle = _('Add Proxy Rule');
 		s.sortable = true;
+		s.nodescriptions = true;
+		s.modaltitle = _('Edit Proxy Rule');
 
 		o = s.option(form.Flag, 'enabled', _('Enabled'));
 		o.rmempty = false;
 		o.default = '1';
+		o.editable = true;
+		o.width = '1%';
 
 		o = s.option(form.Value, 'name', _('Name'),
 			_('A friendly name for this rule, e.g. "NAS WebUI", "Home Assistant".'));
 		o.placeholder = 'My Service';
+		o.width = '15%';
 
 		o = s.option(form.Value, 'domain', _('Domain'),
 			_('Domain for this rule (must be covered by a configured certificate).') +
 			' <a href="' + L.url('admin/services/https-gateway/certificates') + '">' +
 			_('Manage Certificates') + '</a>');
 		o.rmempty = false;
+		/* Show an inline indicator in the table when no cert covers the domain */
+		o.textvalue = function(section_id) {
+			var domain = this.cfgvalue(section_id);
+			if (!domain)
+				return '';
+			if (isCovered(domain))
+				return domain;
+			return E('span', {}, [
+				domain, ' ',
+				E('a', {
+					'href': L.url('admin/services/https-gateway/certificates'),
+					'title': _('No certificate covers this domain. Add one in Certificates.'),
+					'style': 'color:#e65100;text-decoration:none;font-weight:bold'
+				}, '⚠')
+			]);
+		};
 		o.validate = function(section_id, value) {
 			if (!value)
 				return _('Domain cannot be empty');
@@ -68,6 +89,7 @@ return view.extend({
 			_('URL path prefix, e.g. / or /api/. Paths under the same domain must be unique.'));
 		o.rmempty = false;
 		o.default = '/';
+		o.width = '10%';
 		o.validate = function(section_id, value) {
 			if (!value || !/^\/[a-zA-Z0-9_./-]*$/.test(value))
 				return _('Path must start with / and contain only letters, digits, _, ., -, /');
@@ -86,37 +108,12 @@ return view.extend({
 			return true;
 		};
 
-		o = s.option(form.Flag, 'websocket', _('WebSocket'),
+		o = s.option(form.Flag, 'websocket', _('WS'),
 			_('Enable Upgrade/Connection headers for WebSocket long-lived connections.'));
 		o.default = '0';
+		o.editable = true;
+		o.width = '1%';
 
-		return m.render().then(function(formNode) {
-			/* Inject cert coverage indicators next to each domain field */
-			var sections = uci.sections('https_gateway', 'proxy');
-			sections.forEach(function(sect) {
-				var domain = sect.domain;
-				if (!domain) return;
-
-				var covered = isCovered(domain);
-				if (covered) return; /* no indicator needed */
-
-				var warn = E('div', {
-					'style': 'margin-top:4px;padding:4px 8px;background:#fff3e0;' +
-					         'border-left:3px solid #f9a825;border-radius:3px;' +
-					         'font-size:0.85em;color:#e65100'
-				}, [
-					E('span', {}, _('No certificate covers this domain. ') + ' '),
-					E('a', {
-						'href': L.url('admin/services/https-gateway/certificates')
-					}, _('Add one in Certificates'))
-				]);
-
-				var domainRow = formNode.querySelector(
-					'[id="cbi-https_gateway-' + sect['.name'] + '-domain"]');
-				if (domainRow) domainRow.appendChild(warn);
-			});
-
-			return formNode;
-		});
+		return m.render();
 	}
 });
